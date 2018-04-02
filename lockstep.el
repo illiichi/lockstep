@@ -33,9 +33,10 @@
   (and (> (length lockstep-frames) 1)
        (memq (selected-frame) lockstep-frames)))
 
+(defcustom lockstep-lock-buffer nil "synchronize buffer change")
 (defun lockstep-frame (&optional master-frame)
   "Synchronize window configurations of frames."
-  (when (lockstep-needed)
+  (when (and (lockstep-needed) lockstep-lock-buffer)
     (remove-hook 'window-configuration-change-hook 'lockstep-frame)
     (unwind-protect
         (let* ((this-frame (or master-frame (selected-frame)))
